@@ -38,10 +38,14 @@ tools {
       stage('4. Docker image build') {
          steps{
 <<<<<<< HEAD
+<<<<<<< HEAD
           sh "aws ecr get-login-password --region us-west-2 | sudo docker login --username AWS --password-stdin ${params.aws_account}.dkr.ecr.us-west-2.amazonaws.com"
 =======
           sh "aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin ${params.aws_account}.dkr.ecr.us-west-2.amazonaws.com"
 >>>>>>> 80e59f4 (restored .git directory)
+=======
+          sh "aws ecr get-login-password --region us-west-2 | sudo docker login --username AWS --password-stdin ${params.aws_account}.dkr.ecr.us-west-2.amazonaws.com"
+>>>>>>> 7fe01da (added sudo to docker commands)
           sh "sudo docker build -t addressbook ."
           sh "sudo docker tag addressbook:latest ${params.aws_account}.dkr.ecr.us-west-2.amazonaws.com/addressbook:${params.ecr_tag}"
           sh "sudo docker push ${params.aws_account}.dkr.ecr.us-west-2.amazonaws.com/addressbook:${params.ecr_tag}"
