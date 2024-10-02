@@ -1,2 +1,4 @@
 addressbook.iml
 target
+*.DS_Store
+
