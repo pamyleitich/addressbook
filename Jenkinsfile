@@ -63,9 +63,6 @@ tools {
         steps{
           kubeconfig(caCertificate: '',credentialsId: 'k8s-kubeconfig', serverUrl: '') {
           sh "kubectl apply -f monitoring"
-          sh "chmod +x -R script"
-          sh(""" script/createIRSA-AMPIngest.sh""")
-          sh(""" script/createIRSA-AMPQuery.sh""")
           }
          }
        }
