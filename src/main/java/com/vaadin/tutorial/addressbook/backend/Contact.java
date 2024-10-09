@@ -20,9 +20,8 @@ public class Contact implements Serializable, Cloneable {
     private String firstName = "";
     private String lastName = "";
     private String phone = "";
-    private String email = "";
-    private Date birthDate "";
-    private String mail; 
+    private String email = "";  // <---- This is the correct field name
+    private Date birthDate;
 
     public Long getId() {
         return id;
@@ -56,20 +55,12 @@ public class Contact implements Serializable, Cloneable {
         this.phone = phone;
     }
 
-    public String getEmail() {
-    return email;
+    public String getemail() {  // <---- Correct getter for the email field
+        return email;
     }
 
-    public void setMail(String email) {
-    this.email = email;
-    }
-
-    public String getMail() {
-    return mail;
-    }
-
-    public void setMail(String mail) {
-    this.mail = mail;
+    public void setemail(String email) {  // <---- Correct setter for the email field
+        this.email = email;
     }
 
     public Date getBirthDate() {
@@ -92,7 +83,7 @@ public class Contact implements Serializable, Cloneable {
     @Override
     public String toString() {
         return "Contact{" + "id=" + id + ", firstName=" + firstName
-                + ", lastName=" + lastName + ", phone=" + phone + ", email="
+                + ", lastName=" + lastName + ", phone=" + phone + ", email="  // <---- Here the email field is used
                 + email + ", birthDate=" + birthDate + '}';
     }
 
