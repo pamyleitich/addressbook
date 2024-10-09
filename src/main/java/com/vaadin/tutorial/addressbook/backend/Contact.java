@@ -16,13 +16,13 @@ import java.util.Date;
 public class Contact implements Serializable, Cloneable {
 
     private Long id;
-
     private String firstName = "";
     private String lastName = "";
     private String phone = "";
-    private String email = "";  // <---- This is the correct field name
+    private String email = "";  // The correct field name is email
     private Date birthDate;
 
+    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -55,11 +55,11 @@ public class Contact implements Serializable, Cloneable {
         this.phone = phone;
     }
 
-    public String getemail() {  // <---- Correct getter for the email field
+    public String getEmail() {  // Correct getter for the email field
         return email;
     }
 
-    public void setemail(String email) {  // <---- Correct setter for the email field
+    public void setEmail(String email) {  // Correct setter for the email field
         this.email = email;
     }
 
@@ -83,8 +83,9 @@ public class Contact implements Serializable, Cloneable {
     @Override
     public String toString() {
         return "Contact{" + "id=" + id + ", firstName=" + firstName
-                + ", lastName=" + lastName + ", phone=" + phone + ", email="  // <---- Here the email field is used
+                + ", lastName=" + lastName + ", phone=" + phone + ", email="
                 + email + ", birthDate=" + birthDate + '}';
     }
 
 }
+
