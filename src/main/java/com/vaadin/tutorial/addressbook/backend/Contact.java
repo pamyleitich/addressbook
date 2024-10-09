@@ -55,12 +55,12 @@ public class Contact implements Serializable, Cloneable {
         this.phone = phone;
     }
 
-    public String getEmail() {
-        return email;
+    public String getMail() {
+    return mail;
     }
-
-    public void setEmail(String email) {
-        this.email = email;
+    
+    public void setMail(String mail) {
+    this.mail = mail;
     }
 
     public Date getBirthDate() {
