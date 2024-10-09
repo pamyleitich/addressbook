@@ -22,6 +22,7 @@ public class Contact implements Serializable, Cloneable {
     private String phone = "";
     private String email = "";
     private Date birthDate "";
+    private String mail; 
 
     public Long getId() {
         return id;
@@ -53,6 +54,14 @@ public class Contact implements Serializable, Cloneable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getEmail() {
+    return email;
+    }
+
+    public void setMail(String email) {
+    this.email = email;
     }
 
     public String getMail() {
