@@ -29,18 +29,23 @@ pipeline {
         SONAR_TOKEN = credentials('sonarqube-token')
       }
       steps {
-        script {
-          def scannerHome = tool 'SonarQube-Scanner-6.2.1'
-          withSonarQubeEnv("sonarqube-integration") {
-              sh "${scannerHome}/bin/sonar-scanner -X\
-              -Dsonar.projectKey=addressbook-application \
-              -Dsonar.projectName='addressbook-application' \
-              -Dsonar.host.url=https://sonarqube.dominionsystem.org \
-              -Dsonar.token=${env.SONAR_TOKEN} \
-              -Dsonar.sources=src/main/java/ \
-              -Dsonar.java.binaries=target/classes"
-          }
+       script {
+        def scannerHome = tool 'SonarQube-Scanner-6.2.1'       
+        withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
+            withSonarQubeEnv("sonarqube-integration") {
+                sh """
+                    ${scannerHome}/bin/sonar-scanner -X \
+                    -Dsonar.projectKey=addressbook-application \
+                    -Dsonar.projectName='addressbook-application' \
+                    -Dsonar.host.url=https://sonarqube.dominionsystem.org \
+                    -Dsonar.token=${SONAR_TOKEN} \
+                    -Dsonar.sources=src/main/java/ \
+                    -Dsonar.java.binaries=target/classes
+                """
+                }
+            }
         }
+
       }
     }
 
