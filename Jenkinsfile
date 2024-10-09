@@ -16,7 +16,7 @@ tools {
       }
       stage('2. Build with maven') { 
         steps{
-          sh "mvn clean package"
+          sh "mvn -X clean package"
          }
        }
       stage('3. SonarQube analysis') {
