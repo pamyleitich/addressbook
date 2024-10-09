@@ -53,7 +53,7 @@ tools {
        }
       stage('6. Monitoring solution deployment in eks') {
         steps{
-          kubeconfig(caCertificate: '',credentialsId: 'k8s-kubeconfig', serverUrl: '') {
+          kubeconfig(caCertificate: '',credentialsId: 'kubeconfig', serverUrl: '') {
           sh "kubectl apply -f monitoring"
           }
          }
