@@ -32,7 +32,8 @@ pipeline {
         script {
           def scannerHome = tool 'SonarQube-Scanner-6.2.1'
           withSonarQubeEnv("sonarqube-integration") {
-            sh "${scannerHome}/bin/sonar-scanner  \
+ //           sh "${scannerHome}/bin/sonar-scanner  \
+              sh 'mvn sonar:sonar'
               -Dsonar.projectKey=addressbook-application \
               -Dsonar.projectName='addressbook-application' \
               -Dsonar.host.url=https://sonarqube.dominionsystem.org \
