@@ -6,7 +6,7 @@ pipeline {
    string(name: 'ecr_tag',defaultValue: '1.0.0', description: 'Assign the ecr tag version for the build')
        }
 tools {
-    maven "Maven-3.9.8"
+    maven "Maven-3.9.9"
     }
     stages {
       stage('1. Git Checkout') {
@@ -23,13 +23,13 @@ tools {
       environment {SONAR_TOKEN = credentials('sonar-token-abook')}
       steps {
        script {
-         def scannerHome = tool 'SonarQube-Scanner-6.0.0';
+         def scannerHome = tool 'SonarQube-Scanner-6.2.1';
          withSonarQubeEnv("sonarqube-integration") {
-         sh "${tool("SonarQube-Scanner-6.0.0")}/bin/sonar-scanner  \
+         sh "${tool("SonarQube-Scanner-6.2.1")}/bin/sonar-scanner  \
            -Dsonar.projectKey=addressbook-application \
            -Dsonar.projectName='addressbook-application' \
-           -Dsonar.host.url=https://sonar.dominionsystem.com \
-           -Dsonar.token=$SONAR_TOKEN \
+           -Dsonar.host.url=https://sonarqube.dominionsystem.org \
+           -Dsonar.token=$sonarqube-token \
            -Dsonar.sources=src/main/java/ \
            -Dsonar.java.binaries=target/classes"
           }
@@ -38,15 +38,7 @@ tools {
       }
       stage('4. Docker image build') {
          steps{
-<<<<<<< HEAD
-<<<<<<< HEAD
           sh "aws ecr get-login-password --region us-west-2 | sudo docker login --username AWS --password-stdin ${params.aws_account}.dkr.ecr.us-west-2.amazonaws.com"
-=======
-          sh "aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin ${params.aws_account}.dkr.ecr.us-west-2.amazonaws.com"
->>>>>>> 80e59f4 (restored .git directory)
-=======
-          sh "aws ecr get-login-password --region us-west-2 | sudo docker login --username AWS --password-stdin ${params.aws_account}.dkr.ecr.us-west-2.amazonaws.com"
->>>>>>> 7fe01da (added sudo to docker commands)
           sh "sudo docker build -t addressbook ."
           sh "sudo docker tag addressbook:latest ${params.aws_account}.dkr.ecr.us-west-2.amazonaws.com/addressbook:${params.ecr_tag}"
           sh "sudo docker push ${params.aws_account}.dkr.ecr.us-west-2.amazonaws.com/addressbook:${params.ecr_tag}"
