@@ -28,7 +28,7 @@ pipeline {
             }
             steps {
               withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
-                      sh "
+                      sh """
                       ${scannerHome}/bin/sonar-scanner  \
                       -Dsonar.projectKey=addressbook-application \
                       -Dsonar.projectName='addressbook-application' \
@@ -36,9 +36,9 @@ pipeline {
                       -Dsonar.token=${SONAR_TOKEN} \
                       -Dsonar.sources=src/main/java/ \
                       -Dsonar.java.binaries=target/classes \
-                  "
+                     """
+                  }
               }
-            }
         }
     stage('4. Docker Image Build') {
       steps {
