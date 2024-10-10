@@ -1,16 +1,16 @@
 pipeline {
-  agent { node { label "maven-sonarqube-node" } }
-  
-  parameters {
-    choice(name: 'Environment', choices: ['Dev', 'QA', 'UAT', 'Prod'], description: 'Target environment for deployment')
-    string(name: 'ecr_tag', defaultValue: '1.0.0', description: 'Assign the ECR tag version for the build')
-  }
+    agent { node { label "maven-sonarqube-node" } }
+    
+    parameters {
+      choice(name: 'Environment', choices: ['Dev', 'QA', 'UAT', 'Prod'], description: 'Target environment for deployment')
+      string(name: 'ecr_tag', defaultValue: '1.0.0', description: 'Assign the ECR tag version for the build')
+    }
 
-  tools {
-    maven "Maven-3.9.8"
-  }
+    tools {
+      maven "Maven-3.9.8"
+    }
 
-  stages {
+    stages {
     stage('1. Git Checkout') {
       steps {
         git branch: 'release', credentialsId: 'Github-pat', url: 'https://github.com/ndiforfusi/addressbook.git'
