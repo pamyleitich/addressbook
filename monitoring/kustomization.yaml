@@ -1,4 +1,5 @@
 resources:
+- metric-server.yaml
 - storage-class.yaml
 - fluentd-config.yaml
 - elastic-stack.yaml

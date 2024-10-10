@@ -59,7 +59,7 @@ pipeline {
     stage('6. Monitoring Solution Deployment in EKS') {
       steps {
         kubeconfig(caCertificate: '', credentialsId: 'kubeconfig', serverUrl: '') {
-          sh "kubectl apply -f monitoring"
+          sh "kubectl apply -k monitoring"
         }
       }
     }
