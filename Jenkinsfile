@@ -2,7 +2,6 @@ pipeline {
   agent { node { label "maven-sonarqube-node" } }
   
   parameters {
-    choice(name: 'image_repo_sha', choices: ['ia1o0c8b5', '4568366404742', '922266408974', '576900672829'], description: 'AWS account image repo sha value')
     choice(name: 'Environment', choices: ['Dev', 'QA', 'UAT', 'Prod'], description: 'Target environment for deployment')
     string(name: 'ecr_tag', defaultValue: '1.0.0', description: 'Assign the ECR tag version for the build')
   }
@@ -42,10 +41,10 @@ pipeline {
         }
     stage('4. Docker Image Build') {
       steps {
-        sh "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/${image_repo_sha}"
+        sh "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/ia1o0c8b5"
         sh "sudo docker build -t addressbook ."
-        sh "docker tag addressbook:latest public.ecr.aws/${image_repo_sha}/addressbook:${params.ecr_tag}"
-        sh "docker push public.ecr.aws/${image_repo_sha}/addressbook:${params.ecr_tag}"
+        sh "docker tag addressbook:latest public.ecr.aws/ia1o0c8b5/addressbook:${params.ecr_tag}"
+        sh "docker push public.ecr.aws/ia1o0c8b5/addressbook:${params.ecr_tag}"
       }
     }
 
