@@ -51,7 +51,7 @@ pipeline {
     stage('5. Application Deployment in EKS') {
       steps {
         kubeconfig(caCertificate: '', credentialsId: 'kubeconfig', serverUrl: '') {
-          sh "kubectl apply -f manifest"
+          sh "kubectl delete -f manifest"
         }
       }
     }
@@ -59,7 +59,7 @@ pipeline {
     stage('6. Monitoring Solution Deployment in EKS') {
       steps {
         kubeconfig(caCertificate: '', credentialsId: 'kubeconfig', serverUrl: '') {
-          sh "kubectl apply -k monitoring"
+          sh "kubectl delete -k monitoring"
         }
       }
     }
