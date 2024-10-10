@@ -18,13 +18,13 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: abook.dominionsystem.com
-      http:
-        paths:
-          - path: /addressbook-1.0
-            pathType: Prefix
-            backend:
-              service:
-                name: addressbook-service
-                port:
-                  number: 8080
+  - host: abook.dominionsystem.com
+    http:
+      paths:
+      - path: /addressbook-service
+        pathType: Prefix
+        backend:
+          service:
+            name: addressbook-service
+            port:
+              number: 8080
