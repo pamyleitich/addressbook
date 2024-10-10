@@ -18,7 +18,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-  - host: abook.dominionsystem.com
+  - host: app.dominionsystem.com
     http:
       paths:
       - path: /addressbook-service
