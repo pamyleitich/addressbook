@@ -21,7 +21,7 @@ spec:
   - host: app.dominionsystem.com
     http:
       paths:
-      - path: /addressbook-service
+      - path: /addressbook-1.0
         pathType: Prefix
         backend:
           service:
