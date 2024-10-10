@@ -18,8 +18,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-  - host: app.dominionsystem.com
-    http:
+  - http:
       paths:
       - path: /addressbook-1.0
         pathType: Prefix
