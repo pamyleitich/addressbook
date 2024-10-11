@@ -1,6 +1,5 @@
 pipeline {
-    agent { node { label "maven-sonarqube-node" } }
-    
+    agent { node { label "maven-sonarqube-node" } }   
     parameters {
       choice(name: 'Environment', choices: ['Dev', 'QA', 'UAT', 'Prod'], description: 'Target environment for deployment')
       string(name: 'ecr_tag', defaultValue: '1.0.0', description: 'Assign the ECR tag version for the build')
@@ -60,6 +59,7 @@ pipeline {
       steps {
         kubeconfig(caCertificate: '', credentialsId: 'kubeconfig', serverUrl: '') {
           sh "kubectl apply -k monitoring"
+          sh("""script/install_helm.sh""") 
           sh("""script/install_prometheus.sh""") 
         }
       }
