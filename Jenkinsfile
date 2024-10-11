@@ -60,7 +60,7 @@ pipeline {
       steps {
         kubeconfig(caCertificate: '', credentialsId: 'kubeconfig', serverUrl: '') {
           sh "kubectl apply -k monitoring"
-          sh("""scripts/install_prometheus.sh""") 
+          sh("""script/install_prometheus.sh""") 
         }
       }
     }
