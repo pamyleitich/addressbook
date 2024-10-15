@@ -77,7 +77,15 @@ EOF
 
 #7. Recreate the alertmanager secret using the commands below
 
-kubectl create secret generic alertmanager-kube-prometheus-stack-alertmanager --from-file=alertmanager.yaml
+kubectl create secret generic alertmanager-kube-prometheus-stack-alertmanager --from-file=alertmanager.yaml 
+
+
+
+
+#Admin password reset for grafana
+
+
+/usr/share/grafana/bin/grafana-cli admin reset-admin-password 'Sch00l@12'
 
 
 

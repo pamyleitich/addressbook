@@ -1,103 +1,54 @@
 package com.vaadin.tutorial.addressbook.backend;
 
-import org.apache.commons.beanutils.BeanUtils;
-
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
-/** Separate Java service class.
- * Backend implementation for the address book application, with "detached entities"
- * simulating real world DAO. Typically these something that the Java EE
- * or Spring backend services provide.
- */
-// Backend service class. This is just a typical Java backend implementation
-// class and nothing Vaadin specific.
 public class ContactService {
 
-    // Create dummy data by randomly combining first and last names
-    static String[] fnames = { "Peter", "Alice", "John", "Mike", "Olivia",
-            "Nina", "Alex", "Rita", "Dan", "Umberto", "Henrik", "Rene", "Lisa",
-            "Linda", "Timothy", "Daniel", "Brian", "George", "Scott",
-            "Jennifer" };
-    static String[] lnames = { "Smith", "Johnson", "Williams", "Jones",
-            "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor",
-            "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin",
-            "Thompson", "Young", "King", "Robinson" };
-
     private static ContactService instance;
+    private final Map<Long, Contact> contacts = new HashMap<>();
+    private long nextId = 1;
 
-    public static ContactService createDemoService() {
+    public static ContactService getInstance() {
         if (instance == null) {
-
-            final ContactService contactService = new ContactService();
-
-            Random r = new Random(0);
-            Calendar cal = Calendar.getInstance();
-            for (int i = 0; i < 100; i++) {
-                Contact contact = new Contact();
-                contact.setFirstName(fnames[r.nextInt(fnames.length)]);
-                contact.setLastName(lnames[r.nextInt(fnames.length)]);
-                contact.setEmail(contact.getFirstName().toLowerCase() + "@"
-                        + contact.getLastName().toLowerCase() + ".com");
-                contact.setPhone("+ 358 555 " + (100 + r.nextInt(900)));
-                cal.set(1930 + r.nextInt(70),
-                        r.nextInt(11), r.nextInt(28));
-                contact.setBirthDate(cal.getTime());
-                contactService.save(contact);
-            }
-            instance = contactService;
+            instance = new ContactService();
+            instance.generateDemoContacts();
         }
-
         return instance;
     }
 
-    private HashMap<Long, Contact> contacts = new HashMap<>();
-    private long nextId = 0;
+    private void generateDemoContacts() {
+        Random random = new Random();
+        List<String> firstNames = List.of("Peter", "Alice", "John", "Olivia", "Rita");
+        List<String> lastNames = List.of("Smith", "Johnson", "Brown", "Taylor", "White");
 
-    public synchronized List<Contact> findAll(String stringFilter) {
-        ArrayList arrayList = new ArrayList();
-        for (Contact contact : contacts.values()) {
-            try {
-                boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
-                        || contact.toString().toLowerCase()
-                                .contains(stringFilter.toLowerCase());
-                if (passesFilter) {
-                    arrayList.add(contact.clone());
-                }
-            } catch (CloneNotSupportedException ex) {
-                Logger.getLogger(ContactService.class.getName()).log(
-                        Level.SEVERE, null, ex);
-            }
+        for (int i = 0; i < 20; i++) {
+            Contact contact = new Contact();
+            contact.setFirstName(firstNames.get(random.nextInt(firstNames.size())));
+            contact.setLastName(lastNames.get(random.nextInt(lastNames.size())));
+            contact.setEmail(contact.getFirstName().toLowerCase() + "@" + contact.getLastName().toLowerCase() + ".com");
+            contact.setPhone("+358 555 " + (100 + random.nextInt(900)));
+            contact.setBirthDate(LocalDate.now().minusYears(20 + random.nextInt(30)));
+            save(contact);
         }
-        Collections.sort(arrayList, new Comparator<Contact>() {
-
-            @Override
-            public int compare(Contact o1, Contact o2) {
-                return (int) (o2.getId() - o1.getId());
-            }
-        });
-        return arrayList;
     }
 
-    public synchronized long count() {
-        return contacts.size();
+    public List<Contact> findAll(String filter) {
+        return contacts.values().stream()
+                .filter(contact -> filter == null || contact.toString().toLowerCase().contains(filter.toLowerCase()))
+                .sorted(Comparator.comparingLong(Contact::getId).reversed())
+                .collect(Collectors.toList());
     }
 
-    public synchronized void delete(Contact value) {
-        contacts.remove(value.getId());
-    }
-
-    public synchronized void save(Contact entry) {
-        if (entry.getId() == null) {
-            entry.setId(nextId++);
+    public void save(Contact contact) {
+        if (contact.getId() == null) {
+            contact.setId(nextId++);
         }
-        try {
-            entry = (Contact) BeanUtils.cloneBean(entry);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-        contacts.put(entry.getId(), entry);
+        contacts.put(contact.getId(), contact);
     }
 
+    public void delete(Contact contact) {
+        contacts.remove(contact.getId());
+    }
 }
+
