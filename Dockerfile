@@ -1,11 +1,4 @@
-FROM tomcat:9.0.37-jdk8
-
-# Install OpenJDK 11
-RUN apt-get update -y && apt-get install openjdk-11-jdk -y
-
-# Set JAVA_HOME and update PATH
-ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-ENV PATH="$JAVA_HOME/bin:$PATH"
+FROM tomcat:9.0.96-jdk11
 
 # Add your WAR file to the Tomcat webapps directory
 ADD ./target/addressbook-1.0.war /usr/local/tomcat/webapps/
