@@ -248,7 +248,7 @@ spec:
       name: elasticsearch-logging
     spec:
       storageClassName: cloud-ssd
-      accessModes: [ "ReadWriteOnce" ]
+      accessModes: ["ReadWriteOnce"]
       resources:
         requests:
           storage: 31Gi
@@ -289,8 +289,8 @@ spec:
           requests:
             cpu: 100m
         env:
-          - name: ELASTICSEARCH_URL
-            value: http://elasticsearch-logging:9200
+        - name: ELASTICSEARCH_URL
+          value: http://elasticsearch-logging:9200
         ports:
         - containerPort: 5601
           name: ui
@@ -314,4 +314,33 @@ spec:
     targetPort: ui
   selector:
     k8s-app: kibana-logging
-  type: LoadBalancer
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kibana-ingress
+  namespace: kube-system
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:999568710647:certificate/e9822346-ba84-4860-b6b0-fdabd5a22827
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-port: "5601" # Updated to match the service port
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/success-codes: "200,302"
+    alb.ingress.kubernetes.io/load-balancer-name: kibana-ALB
+    alb.ingress.kubernetes.io/target-group-attributes: deregistration_delay.timeout_seconds=30
+spec:
+  ingressClassName: alb
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: kibana-logging
+            port:
+              number: 5601
