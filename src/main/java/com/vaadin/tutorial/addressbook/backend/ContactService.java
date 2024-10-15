@@ -1,5 +1,6 @@
 package com.vaadin.tutorial.addressbook.backend;
 
+import java.time.LocalDate;  // Added the missing import
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class ContactService {
             contact.setLastName(lastNames.get(random.nextInt(lastNames.size())));
             contact.setEmail(contact.getFirstName().toLowerCase() + "@" + contact.getLastName().toLowerCase() + ".com");
             contact.setPhone("+358 555 " + (100 + random.nextInt(900)));
-            contact.setBirthDate(LocalDate.now().minusYears(20 + random.nextInt(30)));
+            contact.setBirthDate(LocalDate.now().minusYears(20 + random.nextInt(30)));  // Updated to use LocalDate
             save(contact);
         }
     }
@@ -51,4 +52,5 @@ public class ContactService {
         contacts.remove(contact.getId());
     }
 }
+
 

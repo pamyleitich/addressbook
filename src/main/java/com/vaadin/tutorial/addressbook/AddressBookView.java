@@ -16,23 +16,30 @@ public class AddressBookView extends VerticalLayout {
     private final ContactService contactService = ContactService.getInstance();
     private final Grid<Contact> grid = new Grid<>(Contact.class);
     private final TextField filterText = new TextField();
+    private final ContactForm contactForm = new ContactForm(this);  // Passing this view to ContactForm
 
     public AddressBookView() {
         configureGrid();
         configureFilter();
 
-        Button newContactButton = new Button("New Contact", click -> addContact());
+        Button newContactButton = new Button("New Contact", click -> addNewContact());
         HorizontalLayout toolbar = new HorizontalLayout(filterText, newContactButton);
         toolbar.setWidthFull();
 
-        add(toolbar, grid);
+        HorizontalLayout mainContent = new HorizontalLayout(grid, contactForm);
+        mainContent.setSizeFull();
+        contactForm.setVisible(false);
+
+        add(toolbar, mainContent);
+        setSizeFull();
         refreshGrid();
     }
 
     private void configureGrid() {
         grid.setColumns("firstName", "lastName", "email", "phone", "birthDate");
         grid.setSelectionMode(Grid.SelectionMode.SINGLE);
-        grid.asSingleSelect().addValueChangeListener(event -> editContact(event.getValue()));
+        grid.asSingleSelect().addValueChangeListener(event -> 
+            contactForm.editContact(event.getValue()));
     }
 
     private void configureFilter() {
@@ -40,21 +47,18 @@ public class AddressBookView extends VerticalLayout {
         filterText.addValueChangeListener(event -> refreshGrid());
     }
 
-    private void refreshGrid() {
+    public void refreshGrid() {  // Changed access modifier to public
         grid.setItems(contactService.findAll(filterText.getValue()));
     }
 
-    private void addContact() {
-        Contact contact = new Contact();
-        contactService.save(contact);
-        refreshGrid();
-        Notification.show("New contact added!");
+    public ContactService getContactService() {  // Added the missing method
+        return contactService;
     }
 
-    private void editContact(Contact contact) {
-        if (contact != null) {
-            Notification.show("Editing: " + contact.getFirstName() + " " + contact.getLastName());
-        }
+    private void addNewContact() {
+        grid.asSingleSelect().clear();
+        contactForm.editContact(new Contact());
     }
 }
+
 
