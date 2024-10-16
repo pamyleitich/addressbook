@@ -13,13 +13,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source> <!-- Java 17 -->
         <maven.compiler.target>17</maven.compiler.target>
-        <vaadin.version>23.3.0</vaadin.version> <!-- Vaadin version -->
-        <spring-boot.version>2.7.12</spring-boot.version> <!-- Spring Boot version -->
+        <vaadin.version>23.3.0</vaadin.version>
+        <spring.boot.version>2.7.0</spring.boot.version> <!-- Ensure Spring Boot version -->
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- Vaadin BOM for version management -->
+            <!-- Vaadin BOM -->
             <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-bom</artifactId>
@@ -31,10 +31,10 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- Vaadin Core Dependencies -->
+        <!-- Vaadin Starter -->
         <dependency>
             <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-core</artifactId>
+            <artifactId>vaadin-spring-boot-starter</artifactId>
             <version>${vaadin.version}</version>
         </dependency>
 
@@ -42,21 +42,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot.version}</version> <!-- Use property -->
-        </dependency>
-
-        <!-- Apache Commons BeanUtils -->
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.9.4</version>
-        </dependency>
-
-        <!-- Jetty for local development -->
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
-            <version>11.0.14</version>
+            <version>${spring.boot.version}</version>
         </dependency>
 
         <!-- Servlet API -->
@@ -67,11 +53,25 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Vaadin Spring Boot Starter -->
+        <!-- Apache Commons -->
         <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-spring-boot-starter</artifactId>
-            <version>${vaadin.version}</version>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.4</version>
+        </dependency>
+
+        <!-- Jetty Server for Development -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>11.0.14</version>
+        </dependency>
+
+        <!-- SLF4J for Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.36</version>
         </dependency>
     </dependencies>
 
@@ -88,19 +88,14 @@
                 </configuration>
             </plugin>
 
-            <!-- Jetty Plugin for running the application locally -->
+            <!-- Spring Boot Maven Plugin -->
             <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>11.0.14</version>
-                <configuration>
-                    <webApp>
-                        <contextPath>/</contextPath>
-                    </webApp>
-                </configuration>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
             </plugin>
 
-            <!-- Vaadin Plugin for frontend compilation -->
+            <!-- Vaadin Maven Plugin -->
             <plugin>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-maven-plugin</artifactId>
@@ -114,9 +109,20 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Maven WAR Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
+
 
 
 
