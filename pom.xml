@@ -3,22 +3,23 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.fusi.tutorial</groupId>
+
+    <groupId>com.vaadin.tutorial</groupId>
     <artifactId>addressbook</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
-    <name>Addressbook Vaadin App</name>
+    <name>AddressBook Vaadin App</name>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <java.version>17</java.version> <!-- Use Java 17 for compatibility -->
+        <spring-boot.version>2.7.15</spring-boot.version>
         <vaadin.version>23.3.0</vaadin.version>
-        <spring-boot.version>2.5.14</spring-boot.version>  <!-- Ensuring compatibility -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- Vaadin BOM for dependency management -->
             <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-bom</artifactId>
@@ -30,28 +31,21 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- Vaadin Core -->
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-core</artifactId>
-            <version>${vaadin.version}</version>
-        </dependency>
-
-        <!-- Vaadin and Spring Boot integration -->
+        <!-- Vaadin Spring Boot Starter -->
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-spring-boot-starter</artifactId>
             <version>${vaadin.version}</version>
         </dependency>
 
-        <!-- Spring Boot Starter for web functionality -->
+        <!-- Spring Boot Web Starter -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring-boot.version}</version>
         </dependency>
 
-        <!-- Servlet API (provided by Tomcat) -->
+        <!-- Servlet API -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -59,22 +53,45 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Optional: Commons BeanUtils -->
+        <!-- Apache Commons BeanUtils -->
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.4</version>
         </dependency>
 
-        <!-- Embedded Jetty for local development -->
+        <!-- Jetty for Local Development (Optional) -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
             <version>11.0.14</version>
         </dependency>
+
+        <!-- SLF4J API -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.36</version>
+        </dependency>
+
+        <!-- Logback Classic for Logging -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.11</version>
+        </dependency>
+
+        <!-- JUnit for Testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
+        <finalName>addressbook-1.0</finalName>
         <plugins>
             <!-- Maven Compiler Plugin -->
             <plugin>
@@ -82,20 +99,18 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
 
-            <!-- Jetty Plugin for Local Development -->
+            <!-- Maven WAR Plugin -->
             <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>11.0.14</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.1</version>
                 <configuration>
-                    <webApp>
-                        <contextPath>/</contextPath>
-                    </webApp>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
 
@@ -114,18 +129,20 @@
                 </executions>
             </plugin>
 
-            <!-- Maven WAR Plugin -->
+            <!-- Spring Boot Maven Plugin -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.1</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
                 <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <mainClass>com.vaadin.tutorial.addressbook.AddressBookApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
 </project>
+
 
 
 
