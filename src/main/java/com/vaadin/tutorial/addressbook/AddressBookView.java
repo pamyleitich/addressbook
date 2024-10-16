@@ -9,16 +9,21 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.addressbook.backend.Contact;
 import com.vaadin.tutorial.addressbook.backend.ContactService;
+import org.springframework.stereotype.Component;
 
-@Route("")
+@Component  // Mark this class as a Spring-managed component
+@Route("")  // Default route for the AddressBook view
 public class AddressBookView extends VerticalLayout {
 
-    private final ContactService contactService = ContactService.getInstance();
+    private final ContactService contactService;
     private final Grid<Contact> grid = new Grid<>(Contact.class);
     private final TextField filterText = new TextField();
-    private final ContactForm contactForm = new ContactForm(this);  // Passing this view to ContactForm
+    private final ContactForm contactForm;
 
-    public AddressBookView() {
+    public AddressBookView(ContactService contactService) {
+        this.contactService = contactService; 
+        this.contactForm = new ContactForm(this);
+
         configureGrid();
         configureFilter();
 
@@ -47,12 +52,8 @@ public class AddressBookView extends VerticalLayout {
         filterText.addValueChangeListener(event -> refreshGrid());
     }
 
-    public void refreshGrid() {  // Changed access modifier to public
+    public void refreshGrid() {
         grid.setItems(contactService.findAll(filterText.getValue()));
-    }
-
-    public ContactService getContactService() {  // Added the missing method
-        return contactService;
     }
 
     private void addNewContact() {
@@ -60,5 +61,6 @@ public class AddressBookView extends VerticalLayout {
         contactForm.editContact(new Contact());
     }
 }
+
 
 

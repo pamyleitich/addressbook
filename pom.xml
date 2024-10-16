@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>com.fusi.tutorial</groupId>
     <artifactId>addressbook</artifactId>
     <version>1.0</version>
@@ -37,7 +38,20 @@
             <version>${vaadin.version}</version>
         </dependency>
 
-        <!-- Servlet API -->
+        <!-- Vaadin Spring Boot Starter -->
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-spring-boot-starter</artifactId>
+            <version>23.1.6</version>
+        </dependency>
+
+        <!-- Spring Boot Starter Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Servlet API (provided by the container) -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -52,7 +66,7 @@
             <version>1.9.4</version>
         </dependency>
 
-        <!-- Jetty for local development -->
+        <!-- Jetty for Local Development -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
@@ -73,7 +87,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Jetty Plugin for running the application locally -->
+            <!-- Jetty Maven Plugin for Local Testing -->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
@@ -85,7 +99,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Vaadin Plugin for frontend compilation -->
+            <!-- Vaadin Plugin for Frontend Compilation -->
             <plugin>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-maven-plugin</artifactId>
@@ -102,5 +116,6 @@
         </plugins>
     </build>
 </project>
+
 
 
