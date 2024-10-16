@@ -33,19 +33,28 @@ public class ContactForm extends FormLayout {
     }
 
     private void configureComponents() {
-        binder.forField(firstName).asRequired("First name is required")
+        binder.forField(firstName)
+                .asRequired("First name is required")
                 .bind(Contact::getFirstName, Contact::setFirstName);
-        binder.forField(lastName).asRequired("Last name is required")
+
+        binder.forField(lastName)
+                .asRequired("Last name is required")
                 .bind(Contact::getLastName, Contact::setLastName);
-        binder.forField(phone).asRequired("Phone number is required")
+
+        binder.forField(phone)
+                .asRequired("Phone number is required")
                 .bind(Contact::getPhone, Contact::setPhone);
-        binder.forField(email).asRequired("Email is required")
+
+        binder.forField(email)
+                .asRequired("Email is required")
                 .withValidator(new EmailValidator("Invalid email address"))
                 .bind(Contact::getEmail, Contact::setEmail);
-        binder.forField(birthDate).bind(Contact::getBirthDate, Contact::setBirthDate);
+
+        binder.forField(birthDate)
+                .bind(Contact::getBirthDate, Contact::setBirthDate);
 
         save.addClickListener(event -> save());
-        cancel.addClickListener(event -> setVisible(false));
+        cancel.addClickListener(event -> cancel());
 
         setVisible(false);
     }
@@ -68,7 +77,7 @@ public class ContactForm extends FormLayout {
     private void save() {
         try {
             binder.writeBean(contact);
-            parentView.getContactService().save(contact);
+            parentView.getContactService().save(contact);  // Ensure this works
             Notification.show("Contact saved");
             parentView.refreshGrid();
             setVisible(false);
@@ -76,7 +85,12 @@ public class ContactForm extends FormLayout {
             Notification.show("Please fill out the form correctly");
         }
     }
+
+    private void cancel() {
+        setVisible(false);
+    }
 }
+
 
 
 

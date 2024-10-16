@@ -9,21 +9,16 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.addressbook.backend.Contact;
 import com.vaadin.tutorial.addressbook.backend.ContactService;
-import org.springframework.stereotype.Component;
 
-@Component  // Mark this class as a Spring-managed component
-@Route("")  // Default route for the AddressBook view
+@Route("")
 public class AddressBookView extends VerticalLayout {
 
-    private final ContactService contactService;
+    private final ContactService contactService = ContactService.getInstance();
     private final Grid<Contact> grid = new Grid<>(Contact.class);
     private final TextField filterText = new TextField();
-    private final ContactForm contactForm;
+    private final ContactForm contactForm = new ContactForm(this);
 
-    public AddressBookView(ContactService contactService) {
-        this.contactService = contactService; 
-        this.contactForm = new ContactForm(this);
-
+    public AddressBookView() {
         configureGrid();
         configureFilter();
 
@@ -56,11 +51,16 @@ public class AddressBookView extends VerticalLayout {
         grid.setItems(contactService.findAll(filterText.getValue()));
     }
 
+    public ContactService getContactService() {  // Ensure this method exists
+        return contactService;
+    }
+
     private void addNewContact() {
         grid.asSingleSelect().clear();
         contactForm.editContact(new Contact());
     }
 }
+
 
 
 
