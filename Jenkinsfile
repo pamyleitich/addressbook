@@ -21,17 +21,18 @@ pipeline {
         sh "mvn clean package"
       }
     }
+  
     stage('3. SonarQube Analysis') {
           environment {
-                scannerHome = tool 'SonarQube-Scanner-6.2.1'
+          scannerHome = tool 'SonarQube-Scanner-6.2.1'
             }
-            steps {
+         steps {
               withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
                       sh """
                       ${scannerHome}/bin/sonar-scanner  \
                       -Dsonar.projectKey=addressbook-application \
                       -Dsonar.projectName='addressbook-application' \
-                      -Dsonar.host.url=https://35.90.232.167:9000 \
+                      -Dsonar.host.url=http://34.213.29.188:9000 \
                       -Dsonar.token=${SONAR_TOKEN} \
                       -Dsonar.sources=src/main/java/ \
                       -Dsonar.java.binaries=target/classes \
@@ -39,12 +40,14 @@ pipeline {
                   }
               }
         }
+
     stage('4. Docker Image Build') {
       steps {
           sh "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/e4o4k3j4"
           sh "sudo docker build -t addressbook ."
-          sh "docker tag addressbook:latest public.ecr.aws/e4o4k3j4/addressbook:latest${params.ecr_tag}"
-          sh "docker push public.ecr.aws/e4o4k3j4/addressbook:latest${params.ecr_tag}"
+          sh "sudo docker tag addressbook:latest public.ecr.aws/e4o4k3j4/addressbook:latest${params.ecr_tag}"
+         sh "docker push public.ecr.aws/e4o4k3j4/addressbook:${params.ecr_tag}"
+        
       }
     }
 
