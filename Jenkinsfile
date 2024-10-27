@@ -40,17 +40,15 @@ pipeline {
                   }
               }
         }
-
-    stage('4. Docker Image Build') {
-      steps {
-          sh "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/e4o4k3j4"
+    stage('4. Docker image build') {
+         steps{
+          sh "aws ecr get-login-password --region us-west-2 | sudo docker login --username AWS --password-stdin ${params.aws_account}.dkr.ecr.us-west-2.amazonaws.com"
           sh "sudo docker build -t addressbook ."
-          sh "sudo docker tag addressbook:latest public.ecr.aws/e4o4k3j4/addressbook:latest${params.ecr_tag}"
-         sh "docker push public.ecr.aws/e4o4k3j4/addressbook:${params.ecr_tag}"
-        
-      }
-    }
-
+          sh "sudo docker tag addressbook:latest ${params.aws_account}.dkr.ecr.us-west-2.amazonaws.com/addressbook:${params.ecr_tag}"
+          sh "sudo docker push ${params.aws_account}.dkr.ecr.us-west-2.amazonaws.com/addressbook:${params.ecr_tag}"
+         }
+       }
+   
     stage('5. Application Deployment in EKS') {
       steps {
         kubeconfig(caCertificate: '', credentialsId: 'kubeconfig', serverUrl: '') {
