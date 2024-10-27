@@ -23,23 +23,23 @@ pipeline {
     }
   
     stage('3. SonarQube Analysis') {
-    environment {
-        scannerHome = tool 'SonarQube-Scanner-6.2.1'
-    }
-    steps {
-        withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
-            sh """
-                ${scannerHome}/bin/sonar-scanner \
-                -Dsonar.projectKey=addressbook-application \
-                -Dsonar.projectName='addressbook-application' \
-                -Dsonar.host.url=https://34.213.29.188:9000 \
-                -Dsonar.token=sqp_18a2ea9f4a75265aebb78c5f2859d6c451b625e4 \
-                -Dsonar.sources=src/main/java/ \
-                -Dsonar.java.binaries=target/classes
-            """
+          environment {
+          scannerHome = tool 'SonarQube-Scanner-6.2.1'
+            }
+         steps {
+              withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
+                      sh """
+                      ${scannerHome}/bin/sonar-scanner  \
+                      -Dsonar.projectKey=addressbook-application \
+                      -Dsonar.projectName='addressbook-application' \
+                      -Dsonar.host.url=https://34.213.29.188:9000 \
+                      -Dsonar.token=${SONAR_TOKEN} \
+                      -Dsonar.sources=src/main/java/ \
+                      -Dsonar.java.binaries=target/classes \
+                     """
+                  }
+              }
         }
-    }
-}
 
     stage('4. Docker Image Build') {
       steps {
