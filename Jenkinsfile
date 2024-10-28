@@ -42,10 +42,10 @@ pipeline {
         }
     stage('4. Docker Image Build') {
         steps {
-          sh "aws ecr get-login-password --region us-west-2 | sudo docker login --username AWS --password-stdin ${aws_account}.dkr.ecr.us-west-2.amazonaws.com"
+          sh "aws ecr get-login-password --region us-west-1 | sudo docker login --username AWS --password-stdin ${aws_account}.dkr.ecr.us-west-1.amazonaws.com"
           sh "sudo docker build -t addressbook ."
-          sh "sudo docker tag addressbook:latest ${aws_account}.dkr.ecr.us-west-2.amazonaws.com/addressbook:${params.ecr_tag}"
-          sh "sudo docker push ${aws_account}.dkr.ecr.us-west-2.amazonaws.com/addressbook:${params.ecr_tag}"
+          sh "sudo docker tag addressbook:latest ${aws_account}.dkr.ecr.us-west-1.amazonaws.com/addressbook:${params.ecr_tag}"
+          sh "sudo docker push ${aws_account}.dkr.ecr.us-west-1.amazonaws.com/addressbook:${params.ecr_tag}"
         }
     }
 
