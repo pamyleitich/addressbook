@@ -71,7 +71,7 @@ pipeline {
     stage('7. Email Notification') {
       steps {
         mail bcc: 'pamyleitich@gmail.com', body: '''Build is Over. Check the application using the URL below:
-         http://application.dominionsystem.org/addressbook-1.0
+         http://addressbook-server-ip-547202945.us-west-2.elb.amazonaws.com/addressbook-1.0
          Let me know if the changes look okay.
          Thanks,
          Dominion System Technologies,
